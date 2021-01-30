@@ -42,7 +42,7 @@ jobs:
       - run:
           name: "Run askanna"
           command: |
-            poetry run askanna push -y --force
+            poetry run askanna push --force
             poetry run askanna run hello.py --force
 
 workflows:
