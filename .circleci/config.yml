@@ -1,0 +1,52 @@
+version: 2.1
+
+executors:
+  python:
+    working_directory: ~/project
+    docker:
+      - image: circleci/python:3.8.2
+commands: # a reusable command without parameters
+  setup-environment:
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependencies--{{ checksum "poetry.lock" }}
+      - run:
+          name: "Install requirements"
+          command: |
+            pip install poetry
+            poetry install
+      - save_cache:
+          key: dependencies--{{ checksum "poetry.lock" }}
+          paths:
+            - /home/circleci/.cache/pypoetry/virtualenvs
+      - run:
+          name: "Run Legacy code"
+          command: |
+            python -m py_compile POC/main0.py
+            python -m py_compile POC/merge_data2.py
+            python -m py_compile POC/get_weather_data.py
+jobs:
+  test:
+    executor: python
+    steps:
+      - setup-environment
+      - checkout
+      - run:
+          name: "Lint check"
+          command: |
+            poetry run flake8
+      - run:
+          name: "Test get_knmi_data"
+          command: |
+            poetry run pytest tests/ -rA
+      - run:
+          name: "Data cleaning check, TO BE DONE WHEN S3 IS READY"
+          command: |
+            echo "waiting for data storage ))"
+            
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test
