@@ -21,11 +21,10 @@ commands: # a reusable command without parameters
           paths:
             - /home/circleci/.cache/pypoetry/virtualenvs
       - run:
-          name: "Run Legacy code"
+          name: "Run some code"
           command: |
-            python -m py_compile POC/main0.py
-            python -m py_compile POC/merge_data2.py
-            python -m py_compile POC/get_weather_data.py
+            python -m py_compile src/main.py
+
 jobs:
   test:
     executor: python
@@ -44,7 +43,7 @@ jobs:
           name: "Data cleaning check, TO BE DONE WHEN S3 IS READY"
           command: |
             echo "waiting for data storage ))"
-            
+
 workflows:
   version: 2
   test:
