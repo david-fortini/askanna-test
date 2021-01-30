@@ -36,7 +36,7 @@ jobs:
           command: |
             poetry run flake8
       - run:
-          name: "Test get_knmi_data"
+          name: "Unit Tests"
           command: |
             poetry run pytest tests/ -rA
       - run:
