@@ -40,6 +40,10 @@ jobs:
           command: |
             poetry run pytest tests/ -rA
       - run:
+          name: "Run s3 env vars"
+          command: |
+            poetry run aws s3 ls
+      - run:
           name: "Run askanna"
           command: |
             poetry run askanna push --force
