@@ -1,6 +1,6 @@
 hello:
   job:
     - pip install poetry && poetry install
-    - python src/main.py
+    - poetry run python src/main.py
 
 push-target: https://beta.askanna.eu/4RMX-gn5J-tYAL-Eogr/project/1LGq-E9Rn-QYVE-Nauu
