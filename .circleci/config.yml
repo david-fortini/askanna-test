@@ -26,7 +26,7 @@ commands: # a reusable command without parameters
             python -m py_compile src/main.py
 
 jobs:
-  test:
+  test-and-run:
     executor: python
     steps:
       - setup-environment
@@ -40,12 +40,13 @@ jobs:
           command: |
             poetry run pytest tests/ -rA
       - run:
-          name: "Data cleaning check, TO BE DONE WHEN S3 IS READY"
+          name: "Run askanna"
           command: |
-            echo "waiting for data storage ))"
+            poetry run askanna push
+            poetry run askanna run hello.py
 
 workflows:
   version: 2
   test:
     jobs:
-      - test
+      - test-and-run
