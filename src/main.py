@@ -16,5 +16,5 @@ if __name__ == "__main__":
     _ = s3.put_object(Body=policy,
                       Bucket='voldemort-test',
                       Key='ask-anna-uploaded' + uuid_key)
-    var_job = os.getenv("example")
-    print(f'var job is = {var_job}')
+    env_var_content = os.getenv("example")
+    print(f'var example={env_var_content}')
