@@ -21,13 +21,12 @@ commands: # a reusable command without parameters
           paths:
             - /home/circleci/.cache/pypoetry/virtualenvs
       - run:
-          name: "Run Legacy code"
+          name: "Run some code"
           command: |
-            python -m py_compile POC/main0.py
-            python -m py_compile POC/merge_data2.py
-            python -m py_compile POC/get_weather_data.py
+            python -m py_compile src/main.py
+
 jobs:
-  test:
+  test-and-run:
     executor: python
     steps:
       - setup-environment
@@ -37,16 +36,21 @@ jobs:
           command: |
             poetry run flake8
       - run:
-          name: "Test get_knmi_data"
+          name: "Unit Tests"
           command: |
             poetry run pytest tests/ -rA
       - run:
-          name: "Data cleaning check, TO BE DONE WHEN S3 IS READY"
+          name: "Run s3 env vars"
           command: |
-            echo "waiting for data storage ))"
-            
+            poetry run aws s3 ls
+      - run:
+          name: "Run askanna"
+          command: |
+            poetry run askanna push --force
+            poetry run askanna run hello --data '{"example": "example_input" }'
+
 workflows:
   version: 2
   test:
     jobs:
-      - test
+      - test-and-run
