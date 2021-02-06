@@ -46,8 +46,9 @@ jobs:
       - run:
           name: "Run askanna"
           command: |
-            poetry run askanna push --force
-            poetry run askanna run hello --data '{"example": "example_input" }'
+            # poetry run askanna push --force
+            askanna run hello --push --data '{"example": "example_input2" }'
+            # poetry run askanna run hello --data '{"example": "example_input" }'
 
 workflows:
   version: 2
